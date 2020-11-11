@@ -18,18 +18,29 @@ const (
 
 func testHandle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	//testing code
 	fmt.Fprintln(w, "<body><h1>Test Home Page</h1><h2>H2</h2><h3>H3</h3> <h4>H4</h4> <h5>H5</h5> <h6>H6</h6></body>")
 }
+
+func pageNotFound404(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprintln(w, "<body><h1>404: Page Not Found</h1><body>")
+}
+
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
 		host, port, user, dbname, password)
 
 	user := services.NewUser(psqlInfo)
 	router := mux.NewRouter()
+	router.NotFoundHandler = http.HandlerFunc(pageNotFound404)
 
 	router.HandleFunc("/", testHandle).Methods("GET")
-	router.HandleFunc("/data", user.Create).Methods("GET")
+	//signup
+	router.HandleFunc("/signup", user.Create).Methods("POST")
+	//login
+	router.HandleFunc("/login", user.Create).Methods("POST")
+
+	//database
 
 	if err := http.ListenAndServe(":8000", router); err != nil {
 		panic(err)

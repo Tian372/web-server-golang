@@ -30,6 +30,16 @@ func NewUser(psqlInfo string) *User {
 //Create User Info
 
 func (user *User) Create(w http.ResponseWriter, r *http.Request) {
+	//TODO : implement user creatation
+	fmt.Fprintln(w, "Create Page")
+}
+
+func (user *User) Login(w http.ResponseWriter, r *http.Request) {
+	//TODO : implement user creatation
+	fmt.Fprintln(w, "Login Page")
+}
+
+func (user *User) TestConnection(w http.ResponseWriter, r *http.Request) {
 	testData := models.Exercise{}
 	user.DB.First(&testData)
 	fmt.Fprintln(w, testData.Activities)
